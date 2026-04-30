@@ -76,6 +76,73 @@ export const selectFilteredPatients = createSelector(
     }
 );
 
+export const selectGenderStats = createSelector(
+  [(state: RootState) => state.patients.patients],
+  (patients) => {
+    const map: Record<string, number> = {};
+
+    patients.forEach((p) => {
+      map[p.gender] = (map[p.gender] || 0) + 1;
+    });
+
+    return Object.entries(map).map(([name, value]) => ({
+      name,
+      value,
+    }));
+  }
+);
+
+export const selectBloodGroupStats = createSelector(
+  [(state: RootState) => state.patients.patients],
+  (patients) => {
+    const map: Record<string, number> = {};
+
+    patients.forEach((p) => {
+      map[p.bloodGroup] = (map[p.bloodGroup] || 0) + 1;
+    });
+
+    return Object.entries(map).map(([name, value]) => ({
+      name,
+      value,
+    }));
+  }
+);
+
+export const selectSeverityStats = createSelector(
+  [(state: RootState) => state.patients.patients],
+  (patients) => {
+    const map: Record<string, number> = {};
+
+    patients.forEach((p) => {
+      p.medicalHistory.forEach((m) => {
+        map[m.severity] = (map[m.severity] || 0) + 1;
+      });
+    });
+
+    return Object.entries(map).map(([name, value]) => ({
+      name,
+      value,
+    }));
+  }
+);
+
+export const selectPatientGrowth = createSelector(
+  [(state: RootState) => state.patients.patients],
+  (patients) => {
+    const map: Record<string, number> = {};
+
+    patients.forEach((p) => {
+      const month = p.createdAt.slice(0, 7);
+      map[month] = (map[month] || 0) + 1;
+    });
+
+    return Object.entries(map).map(([month, count]) => ({
+      month,
+      count,
+    }));
+  }
+);
+
 export const { setSearch, setGenderFilter, setBloodGroupFilter, toggleView } =
     patientSlice.actions;
 
