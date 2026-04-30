@@ -2,6 +2,7 @@
 import "./globals.css";
 import Providers from "@/store/providers";
 import { ReactNode } from "react";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Healthcare Dashboard",
@@ -17,6 +18,17 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>{children}</Providers>
+        <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: "#1e293b",
+                color: "#fff",
+                border: "1px solid #334155",
+              },
+            }}
+          />
+
       </body>
     </html>
   );
