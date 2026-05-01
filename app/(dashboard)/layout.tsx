@@ -30,13 +30,13 @@ export default function DashboardLayout({
         <MobileSidebar />
 
         {/* Main Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col w-full">
 
           {/* Topbar (Dynamic) */}
           <Topbar title={title} onLogout={logout} />
 
           {/* Page Content */}
-          <main className="flex-1 p-4 md:p-6">
+          <main className="flex-1 p-3.5 ">
             {children}
           </main>
 

@@ -143,6 +143,13 @@ export const selectPatientGrowth = createSelector(
   }
 );
 
+
+export const selectPatientById = (id: string) =>
+  createSelector(
+    [(state: RootState) => state.patients.patients],
+    (patients) => patients.find((p) => p.id === id)
+  );
+
 export const { setSearch, setGenderFilter, setBloodGroupFilter, toggleView } =
     patientSlice.actions;
 

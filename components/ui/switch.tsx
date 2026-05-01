@@ -5,7 +5,7 @@ import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
 import { cn } from "@/lib/utils"
 
 function Switch({
-  className,
+  className = 'bg-red-500 border-red-500',
   size = "default",
   ...props
 }: SwitchPrimitive.Root.Props & {
