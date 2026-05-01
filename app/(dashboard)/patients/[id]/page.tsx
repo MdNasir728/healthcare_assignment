@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import AuthGuard from "@/components/common/AuthGuard";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 import StatCard from "@/components/common/StatCard";
@@ -26,7 +25,6 @@ export default function PatientDetailPage() {
     }
 
     return (
-        <AuthGuard>
             <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 space-y-6">
 
 
@@ -134,6 +132,5 @@ export default function PatientDetailPage() {
                     )}
                 </SectionCard>
             </div>
-        </AuthGuard>
     );
 }

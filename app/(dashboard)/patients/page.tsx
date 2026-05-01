@@ -1,6 +1,5 @@
 "use client";
 
-import AuthGuard from "@/components/common/AuthGuard";
 import FilterDropdown from "@/components/common/FilterDropdown";
 
 import { useAppDispatch } from "@/hooks/useAppDispatch";
@@ -39,7 +38,6 @@ export default function PatientsPage() {
   const { filters, view } = useAppSelector((state) => state.patients);
 
   return (
-    <AuthGuard>
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 space-y-6">
 
         {/* Header */}
@@ -164,6 +162,5 @@ export default function PatientsPage() {
           </div>
         )}
       </div>
-    </AuthGuard>
   );
 }
