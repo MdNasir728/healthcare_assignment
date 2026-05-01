@@ -103,3 +103,83 @@ export const selectKPIStats = createSelector(
     };
   }
 );
+
+/* =========================
+   Today Appointments
+========================= */
+export const selectTodayAppointments = createSelector(
+  [selectPatients],
+  (patients) => {
+    const today = new Date().toISOString().slice(0, 10);
+
+    let scheduled = 0;
+    let completed = 0;
+
+    patients.forEach((p) => {
+      p.appointments.forEach((a) => {
+        if (a.date.startsWith(today)) {
+          if (a.status === "Scheduled") scheduled++;
+          if (a.status === "Completed") completed++;
+        }
+      });
+    });
+
+    return {
+      scheduled,
+      completed,
+      total: scheduled + completed,
+    };
+  }
+);
+
+/* =========================
+   High Risk Patients
+========================= */
+export const selectHighRiskPatients = createSelector(
+  [selectPatients],
+  (patients) => {
+    return patients.filter((p) =>
+      p.medicalHistory.some((m) => m.severity === "High")
+    );
+  }
+);
+
+/* =========================
+   Recent Patients
+========================= */
+export const selectRecentPatients = createSelector(
+  [selectPatients],
+  (patients) => {
+    return [...patients]
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      )
+      .slice(0, 5);
+  }
+);
+
+/* =========================
+   Top Conditions
+========================= */
+export const selectTopConditions = createSelector(
+  [selectPatients],
+  (patients) => {
+    const map: Record<string, number> = {};
+
+    patients.forEach((p) => {
+      p.medicalHistory.forEach((m) => {
+        map[m.condition] = (map[m.condition] || 0) + 1;
+      });
+    });
+
+    return Object.entries(map)
+      .map(([condition, count]) => ({
+        condition,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  }
+);
