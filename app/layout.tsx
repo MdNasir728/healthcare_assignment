@@ -1,8 +1,11 @@
 
+import AppInitializer from "@/components/common/AppInitializer";
 import "./globals.css";
 import Providers from "@/store/providers";
 import { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
+
+
 
 export const metadata = {
   title: "Healthcare Dashboard",
@@ -14,9 +17,12 @@ export default function RootLayout({
 }: {
   children: ReactNode;
 }) {
+
+
   return (
     <html lang="en">
       <body>
+        <AppInitializer />
         <Providers>{children}</Providers>
         <Toaster
             position="top-right"
