@@ -7,6 +7,7 @@ import RecentPatients from "@/components/dashboard/RecentPatients";
 import QuickInsights from "@/components/dashboard/QuickInsights";
 
 export default function DashboardPage() {
+  
   return (
     <div className="space-y-6">
       <KPISection />

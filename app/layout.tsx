@@ -3,7 +3,6 @@ import AppInitializer from "@/components/common/AppInitializer";
 import "./globals.css";
 import Providers from "@/store/providers";
 import { ReactNode } from "react";
-import { Toaster } from "react-hot-toast";
 
 
 

@@ -1,16 +1,17 @@
 self.addEventListener("install", () => {
-  console.log("Service Worker installed");
+  console.log("Service Worker Installed");
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", () => {
-  console.log("Service Worker activated");
+  console.log("Service Worker Activated");
 });
 
 self.addEventListener("message", (event) => {
-  if (event.data?.type === "SHOW_NOTIFICATION") {
-    self.registration.showNotification(event.data.title, {
-      body: event.data.body,
-      icon: "/icons/icon-192.png",
-    });
-  }
+  const { title, body } = event.data;
+
+  self.registration.showNotification(title, {
+    body,
+    icon: "/icons/icon-192.png",
+  });
 });

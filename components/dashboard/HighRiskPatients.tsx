@@ -14,13 +14,28 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 import { AlertTriangle } from "lucide-react";
+import { sendNotification } from "@/services/notification.service";
+import { useEffect, useRef } from "react";
 
 export default function HighRiskPatients() {
   const patients = useAppSelector(selectHighRiskPatients);
+  // Prevent repeated notifications
+  const hasNotified = useRef(false);
+
+  useEffect(() => {
+    if (patients.length > 0 && !hasNotified.current) {
+      sendNotification(
+        "🚨 High Risk Alert",
+        `${patients.length} high-risk patients detected`
+      );
+
+      hasNotified.current = true;
+    }
+  }, [patients]);
 
   return (
     <Card className="bg-red-500/5 border-red-500/20 backdrop-blur-xl">
-      
+
       {/* Header */}
       <CardHeader className="flex flex-row items-center gap-2">
         <AlertTriangle className="text-red-400" size={18} />
@@ -49,7 +64,7 @@ export default function HighRiskPatients() {
             >
               {/* Left */}
               <div className="flex items-center gap-3">
-                
+
                 <Avatar>
                   <AvatarImage src={p.avatar} />
                   <AvatarFallback>
