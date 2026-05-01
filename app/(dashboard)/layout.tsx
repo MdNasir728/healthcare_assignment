@@ -8,6 +8,8 @@ import { SidebarProvider } from "@/components/providers/SidebarProvider";
 import { useLogout } from "@/hooks/useLogout";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import AuthGuard from './../../components/common/AuthGuard';
+import ToasterProvider from "@/components/providers/ToasterProvider";
+import AuthInitializer from './../../components/providers/AuthInitializer';
 
 
 export default function DashboardLayout({
@@ -21,6 +23,8 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <AuthGuard>
+        <ToasterProvider />
+        <AuthInitializer />
       <div className="min-h-screen flex bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
 
         {/* Desktop Sidebar */}

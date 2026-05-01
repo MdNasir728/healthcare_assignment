@@ -2,11 +2,29 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
 import { loginUser, logoutUser, LoginPayload } from "@/services/auth.service";
 
+
+export interface AuthUser {
+  uid: string;
+  email: string | null;
+  displayName?: string | null;
+  photoURL?: string | null;
+}
+
 interface AuthState {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
   error: string | null;
 }
+
+
+const getInitialUser = (): AuthUser | null => {
+  if (typeof window !== "undefined") {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  }
+  return null;
+};
+
 
 const initialState: AuthState = {
   user: null,
@@ -14,14 +32,24 @@ const initialState: AuthState = {
   error: null,
 };
 
+const mapFirebaseUser = (user: User): AuthUser => ({
+  uid: user.uid,
+  email: user.email,
+  displayName: user.displayName,
+  photoURL: user.photoURL,
+});
+
 
 export const loginThunk = createAsyncThunk<
-  User,
+  AuthUser,
   LoginPayload,
   { rejectValue: string }
 >("auth/login", async (payload, { rejectWithValue }) => {
   try {
-    return await loginUser(payload);
+    const firebaseUser = await loginUser(payload);
+
+    return mapFirebaseUser(firebaseUser);
+
   } catch (error: unknown) {
     if (error instanceof Error) {
       return rejectWithValue(error.message);
@@ -45,10 +73,15 @@ export const logoutThunk = createAsyncThunk<
   }
 });
 
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action: PayloadAction<AuthUser>) => {
+      state.user = action.payload;
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -58,9 +91,12 @@ const authSlice = createSlice({
       })
       .addCase(
         loginThunk.fulfilled,
-        (state, action: PayloadAction<User>) => {
+        (state, action: PayloadAction<AuthUser>) => {
           state.loading = false;
           state.user = action.payload;
+
+          // ✅ Persist clean data only
+          localStorage.setItem("user", JSON.stringify(action.payload));
         }
       )
       .addCase(loginThunk.rejected, (state, action) => {
@@ -75,6 +111,9 @@ const authSlice = createSlice({
       .addCase(logoutThunk.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
+
+        // ✅ Clear storage
+        localStorage.removeItem("user");
       })
       .addCase(logoutThunk.rejected, (state, action) => {
         state.loading = false;
@@ -82,5 +121,5 @@ const authSlice = createSlice({
       });
   },
 });
-
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;
