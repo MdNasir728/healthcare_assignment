@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { LayoutGrid, List, Plus } from "lucide-react";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import AddPatientButton from './AddPatientButton';
 
 export default function PatientHeader() {
   const dispatch = useAppDispatch();
@@ -54,10 +55,7 @@ className='bg-red-500'            checked={view === "list"}
         </div>
 
         {/* Add Patient (future ready) */}
-        <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
-          <Plus size={16} />
-          Add Patient
-        </Button>
+        <AddPatientButton />
 
       </div>
     </div>

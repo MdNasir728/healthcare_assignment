@@ -14,20 +14,23 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 import { AlertTriangle } from "lucide-react";
-import { sendNotification } from "@/services/notification.service";
 import { useEffect, useRef } from "react";
 
 export default function HighRiskPatients() {
   const patients = useAppSelector(selectHighRiskPatients);
-  // Prevent repeated notifications
-  const hasNotified = useRef(false);
+
+   const hasNotified = useRef(false);
 
   useEffect(() => {
-    if (patients.length > 0 && !hasNotified.current) {
-      sendNotification(
-        "🚨 High Risk Alert",
-        `${patients.length} high-risk patients detected`
-      );
+    if (
+      patients.length > 0 &&
+      Notification.permission === "granted" &&
+      !hasNotified.current
+    ) {
+      new Notification("🚨 High Risk Alert", {
+        body: `${patients.length} high-risk patients need attention`,
+        icon: "/icons/icon-192.png",
+      });
 
       hasNotified.current = true;
     }

@@ -11,7 +11,6 @@ import { loginThunk, setUser } from "@/features/auth/authSlice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { sendNotification } from "@/services/notification.service";
 
 interface LoginFormState {
   email: string;
@@ -53,7 +52,6 @@ export default function LoginPage() {
 
     if (loginThunk.fulfilled.match(result)) {
       toast.success("Login successful 🎉");
-      sendNotification("Logged In", form.email)
       router.push("/dashboard");
     } else {
       toast.error(result.payload || "Login failed");
